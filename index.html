@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BizFind — Local Business Directory</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}
+    body{background:#f9fafb;color:#111;line-height:1.6;}
+    header{background:#0d6efd;color:white;padding:20px;text-align:center;}
+    header h1{font-size:2rem;margin-bottom:10px;}
+    header p{font-size:1rem;}
+    nav a{color:white;margin:0 10px;text-decoration:none;font-weight:600;}
+
+    .search-bar{margin:20px auto;max-width:600px;display:flex;gap:10px;}
+    .search-bar input{flex:1;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:5px;}
+    .search-bar button{padding:10px 20px;background:#0d6efd;color:white;border:none;font-weight:600;border-radius:5px;cursor:pointer;}
+
+    .categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;padding:20px;}
+    .category-card{background:white;border-radius:10px;padding:15px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:transform 0.2s;cursor:pointer;}
+    .category-card:hover{transform:translateY(-5px);}
+    .category-card img{width:50px;height:50px;margin-bottom:10px;}
+    .category-card h3{font-size:1rem;}
+
+    .business-list{padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+    .business-card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:transform 0.2s;cursor:pointer;}
+    .business-card:hover{transform:translateY(-5px);}
+    .business-card img{width:100%;height:150px;object-fit:cover;}
+    .card-content{padding:15px;}
+    .card-content h4{font-size:1.1rem;margin-bottom:5px;}
+    .card-content p{font-size:0.9rem;color:#555;}
+
+    footer{background:#111;color:white;text-align:center;padding:20px;margin-top:40px;}
+
+    /* Modal */
+    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.6);}
+    .modal-content{background:white;margin:10% auto;padding:20px;border-radius:10px;max-width:500px;position:relative;}
+    .close{position:absolute;top:10px;right:15px;font-size:1.5rem;font-weight:bold;color:#333;cursor:pointer;}
+
+    @media(max-width:600px){.search-bar{flex-direction:column;}.search-bar button{width:100%;}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BizFind</h1>
+    <p>The Ultimate Local Business Directory</p>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="search-bar">
+    <input type="text" placeholder="Search businesses or categories..." />
+    <button>Search</button>
+  </section>
+
+  <section class="categories">
+    <div class="category-card" onclick="filterCategory('Restaurants')">
+      <img src="https://via.placeholder.com/50" alt="Restaurants"/>
+      <h3>Restaurants</h3>
+    </div>
+    <div class="category-card" onclick="filterCategory('Plumbers')">
+      <img src="https://via.placeholder.com/50" alt="Plumbers"/>
+      <h3>Plumbers</h3>
+    </div>
+    <div class="category-card" onclick="filterCategory('Gyms')">
+      <img src="https://via.placeholder.com/50" alt="Gyms"/>
+      <h3>Gyms</h3>
+    </div>
+    <div class="category-card" onclick="filterCategory('Salons')">
+      <img src="https://via.placeholder.com/50" alt="Salons"/>
+      <h3>Salons</h3>
+    </div>
+  </section>
+
+  <section class="business-list" id="businessList">
+    <div class="business-card" onclick="openModal('Joe\'s Pizza','Best pizza in town. Contact: 123-456-7890')">
+      <img src="https://via.placeholder.com/400x150" alt="Joe's Pizza" />
+      <div class="card-content">
+        <h4>Joe's Pizza</h4>
+        <p>Restaurants</p>
+      </div>
+    </div>
+    <div class="business-card" onclick="openModal('City Plumbing','Reliable plumbers for all home repairs. Contact: 321-654-0987')">
+      <img src="https://via.placeholder.com/400x150" alt="City Plumbing" />
+      <div class="card-content">
+        <h4>City Plumbing</h4>
+        <p>Plumbers</p>
+      </div>
+    </div>
+    <div class="business-card" onclick="openModal('FitZone Gym','Modern gym with personal trainers. Contact: 555-123-4567')">
+      <img src="https://via.placeholder.com/400x150" alt="FitZone Gym" />
+      <div class="card-content">
+        <h4>FitZone Gym</h4>
+        <p>Gyms</p>
+      </div>
+    </div>
+    <div class="business-card" onclick="openModal('Glow Hair Salon','Expert stylists. Contact: 555-987-6543')">
+      <img src="https://via.placeholder.com/400x150" alt="Glow Hair Salon" />
+      <div class="card-content">
+        <h4>Glow Hair Salon</h4>
+        <p>Salons</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+
+  <section id="contact" style="padding:20px;max-width:600px;margin:auto;">
+    <h2>Contact Us</h2>
+    <form onsubmit="alert('Message sent!'); return false;">
+      <input type="text" placeholder="Your Name" style="width:100%;padding:10px;margin-bottom:10px;" required />
+      <input type="email" placeholder="Your Email" style="width:100%;padding:10px;margin-bottom:10px;" required />
+      <textarea placeholder="Your Message" style="width:100%;padding:10px;margin-bottom:10px;" rows="5" required></textarea>
+      <button type="submit" style="padding:10px 20px;background:#0d6efd;color:white;border:none;border-radius:5px;cursor:pointer;">Send</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 BizFind. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+
+    function openModal(title, desc) {
+      modalTitle.textContent = title;
+      modalDesc.textContent = desc;
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      if(event.target == modal) closeModal();
+    }
+
+    function filterCategory(category){
+      const cards = document.querySelectorAll('.business-card');
+      cards.forEach(card=>{
+        if(card.querySelector('p').textContent === category || category==='All'){
+          card.style.display='block';
+        } else {
+          card.style.display='none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
