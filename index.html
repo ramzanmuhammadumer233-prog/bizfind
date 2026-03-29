@@ -1,111 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BizFind — Local Business Directory</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-  * {box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
-  body {background:#f9fafb;color:#111;line-height:1.6;}
-  header {background:#0d6efd;color:white;padding:30px 20px;text-align:center;}
-  header h1 {font-size:2.5rem;margin-bottom:10px;}
-  header p {font-size:1rem;color:#e0e0e0;}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-  .search-bar {margin:20px auto;max-width:600px;display:flex;gap:10px;}
-  .search-bar input {flex:1;padding:15px;font-size:1rem;border:1px solid #ccc;border-radius:10px;}
-  .search-bar button {padding:15px 25px;background:#ff7f50;border:none;color:white;font-weight:600;border-radius:10px;cursor:pointer;transition:0.2s;}
-  .search-bar button:hover {opacity:0.9;}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+  body{background:#f9fafb;color:#111;line-height:1.5;}
 
-  .categories {display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;padding:30px;}
-  .category-card {background:white;border-radius:15px;padding:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.1);cursor:pointer;transition:0.3s;}
-  .category-card:hover {transform:translateY(-5px);}
-  .category-card img {width:50px;height:50px;margin-bottom:10px;}
-  .category-card h3 {font-size:1rem;}
+  header{
+    background: linear-gradient(135deg,#0d6efd,#6610f2);
+    color:white;
+    padding:80px 20px 60px;
+    text-align:center;
+    clip-path: polygon(0 0,100% 0,100% 85%,0 100%);
+  }
+  header h1{font-size:3rem;font-weight:700;margin-bottom:10px;}
+  header p{font-size:1.2rem;color:#e0e0e0;margin-bottom:30px;}
+  
+  .search-bar{max-width:700px;margin:0 auto;display:flex;gap:10px;}
+  .search-bar input{flex:1;padding:15px 20px;font-size:1rem;border-radius:50px;border:none;outline:none;}
+  .search-bar button{padding:15px 30px;font-weight:600;border-radius:50px;border:none;background:#ff7f50;color:white;cursor:pointer;transition:0.2s;}
+  .search-bar button:hover{opacity:0.9;}
 
-  .business-list {padding:20px 30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-  .business-card {background:white;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.1);cursor:pointer;transition:0.3s;}
-  .business-card:hover {transform:translateY(-5px);}
-  .business-card img {width:100%;height:180px;object-fit:cover;}
-  .card-content {padding:15px;}
-  .card-content h4 {font-size:1.1rem;margin-bottom:5px;}
-  .card-content p {font-size:0.9rem;color:#555;}
+  .categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:20px;padding:40px 20px;max-width:1200px;margin:0 auto;}
+  .category-card{background:white;border-radius:20px;padding:25px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,0.08);transition:transform 0.3s;}
+  .category-card:hover{transform:translateY(-8px);}
+  .category-card img{width:60px;height:60px;margin-bottom:10px;}
+  .category-card h3{font-size:1rem;font-weight:600;}
 
-  footer {background:#111;color:white;text-align:center;padding:25px;margin-top:40px;}
-  footer a {color:#ff7f50;text-decoration:none;}
+  .business-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;padding:40px 20px;max-width:1200px;margin:0 auto;}
+  .business-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.08);transition:transform 0.3s;cursor:pointer;}
+  .business-card:hover{transform:translateY(-8px);}
+  .business-card img{width:100%;height:180px;object-fit:cover;}
+  .card-content{padding:20px;}
+  .card-content h4{font-size:1.1rem;font-weight:600;margin-bottom:5px;}
+  .card-content p{font-size:0.9rem;color:#555;margin-bottom:8px;}
+  .card-content .rating{color:#ffb400;font-weight:600;}
 
-  @media(max-width:600px){.search-bar {flex-direction:column;} .search-bar button {width:100%;}}
+  footer{background:#111;color:white;text-align:center;padding:25px 20px;margin-top:40px;}
+  footer a{color:#ff7f50;text-decoration:none;}
 </style>
 </head>
 <body>
 
 <header>
   <h1>BizFind</h1>
-  <p>Discover local businesses and connect with top-rated professionals in your area</p>
+  <p>Find local businesses, read reviews, and connect with top-rated professionals in your area</p>
+  <div class="search-bar">
+    <input type="text" placeholder="Search businesses, categories or services">
+    <button>Search</button>
+  </div>
 </header>
-
-<section class="search-bar">
-  <input type="text" placeholder="Search for businesses, categories, or services..." />
-  <button>Search</button>
-</section>
 
 <section class="categories">
   <div class="category-card">
-    <img src="https://via.placeholder.com/50" alt="Restaurants"/>
+    <img src="https://via.placeholder.com/60" alt="Restaurants">
     <h3>Restaurants</h3>
   </div>
   <div class="category-card">
-    <img src="https://via.placeholder.com/50" alt="Plumbers"/>
+    <img src="https://via.placeholder.com/60" alt="Plumbers">
     <h3>Plumbers</h3>
   </div>
   <div class="category-card">
-    <img src="https://via.placeholder.com/50" alt="Gyms"/>
+    <img src="https://via.placeholder.com/60" alt="Gyms">
     <h3>Gyms</h3>
   </div>
   <div class="category-card">
-    <img src="https://via.placeholder.com/50" alt="Salons"/>
+    <img src="https://via.placeholder.com/60" alt="Salons">
     <h3>Salons</h3>
   </div>
   <div class="category-card">
-    <img src="https://via.placeholder.com/50" alt="Doctors"/>
+    <img src="https://via.placeholder.com/60" alt="Doctors">
     <h3>Doctors</h3>
-  </div>
-  <div class="category-card">
-    <img src="https://via.placeholder.com/50" alt="More"/>
-    <h3>More Categories</h3>
   </div>
 </section>
 
 <section class="business-list">
   <div class="business-card">
-    <img src="https://via.placeholder.com/400x180" alt="Joe's Pizza" />
+    <img src="https://via.placeholder.com/400x180" alt="Joe's Pizza">
     <div class="card-content">
       <h4>Joe's Pizza</h4>
       <p>Best pizza in town with great delivery service.</p>
+      <p class="rating">⭐ 4.8</p>
     </div>
   </div>
-
   <div class="business-card">
-    <img src="https://via.placeholder.com/400x180" alt="City Plumbing" />
+    <img src="https://via.placeholder.com/400x180" alt="City Plumbing">
     <div class="card-content">
       <h4>City Plumbing</h4>
       <p>Reliable plumbers for all home repairs.</p>
+      <p class="rating">⭐ 4.7</p>
     </div>
   </div>
-
   <div class="business-card">
-    <img src="https://via.placeholder.com/400x180" alt="FitZone Gym" />
+    <img src="https://via.placeholder.com/400x180" alt="FitZone Gym">
     <div class="card-content">
       <h4>FitZone Gym</h4>
       <p>Modern gym with personal trainers and group classes.</p>
+      <p class="rating">⭐ 4.9</p>
     </div>
   </div>
-
   <div class="business-card">
-    <img src="https://via.placeholder.com/400x180" alt="Glow Hair Salon" />
+    <img src="https://via.placeholder.com/400x180" alt="Glow Hair Salon">
     <div class="card-content">
       <h4>Glow Hair Salon</h4>
       <p>Expert stylists and top-notch hair care products.</p>
+      <p class="rating">⭐ 4.8</p>
     </div>
   </div>
 </section>
